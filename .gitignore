@@ -1,0 +1,9 @@
+# build files
+*.exe
+*.s
+*.o
+*.i
+
+# Added by cargo
+
+/target
