@@ -10,8 +10,8 @@ const INCLUDE_PATH: &'static str = "./inc/";
 
 /// Run the build command
 pub(crate) fn run(path: Option<String>) {
-    let path = path.unwrap_or(".".into());
-    let path = Path::new(&path);
+    let path_str = path.unwrap_or(".".into());
+    let path = Path::new(&path_str);
 
     // Get the source and include folders:
     let source = Path::join(path, SOURCE_PATH);
@@ -25,12 +25,14 @@ pub(crate) fn run(path: Option<String>) {
 
     walk_src(&mut ctx.source_files, &source).expect("failed to walk source dir");
 
-    println!("~ Building `{}` using gcc", path.to_string_lossy());
+    fs::create_dir_all(Path::join(Path::new(&ctx.project_dir), "./target/")).expect("failed to create target dir");
+
+    println!("~ Building `{}` using gcc", path_str);
 
     gcc::build(ctx).expect("failed to build with gcc");
 
-    println!("~ Finished building `{}` using gcc", path.to_string_lossy());
-    println!("Output file: `./program(.exe)`");
+    println!("~ Finished building `{}` using gcc", path_str);
+    println!("Output file: `{}/target/program(.exe)`", path_str);
 }
 
 /// Recursively walk through all source files in a directory.

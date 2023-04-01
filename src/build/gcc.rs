@@ -1,4 +1,4 @@
-use std::{process::{Command, Output}, io};
+use std::{process::{Command, Output}, io, path::Path};
 
 use super::project::Project;
 
@@ -11,7 +11,7 @@ pub(crate) fn build(ctx: Project) -> io::Result<Output> {
     }
 
     cmd.arg("-o");
-    cmd.arg("program");
+    cmd.arg(Path::join(Path::new(&ctx.project_dir), "./target/program"));
 
     cmd.arg("-I");
     cmd.arg(ctx.include_dir);
